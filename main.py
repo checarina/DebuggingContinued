@@ -15,9 +15,18 @@ def init_stage(stage):
 # 4. Any dead cell with 3 neighbors comes alive
 
 def one_generation(stage):
+    #stage_copy =stage[:] #shallow copy vs deep copy
+    stage_copy = []
     for v_pos in range(len(stage)):
-        for h_pos in range(len(v_pos)):
-            neighbors = count_neighbors(stage, v_pos, h_pos)
+        new_row = []
+        for h_pos in range(len(stage[v_pos])):
+            new_row.append(stage[v_pos][h_pos])
+        stage_copy.append(new_row)
+    # print(stage_copy)
+
+    for v_pos in range(len(stage)):
+        for h_pos in range(len(stage[v_pos])):
+            neighbors = count_neighbors(stage_copy, v_pos, h_pos)
             if not stage[v_pos][h_pos] and neighbors == 3:
                 stage[v_pos][h_pos] = True
             elif stage[v_pos][h_pos] and neighbors < 2:
@@ -27,11 +36,14 @@ def one_generation(stage):
             elif stage[v_pos][h_pos] and neighbors > 3:
                 stage[v_pos][h_pos] = False
                 
-
+    # stage = stage_copy
 init_stage(stage)
 print("First Generation:")
 print_stage(stage)
-one_generation(stage)
-print("Second Generation:")
-print_stage(stage)
-
+# one_generation(stage)
+# print("Second Generation:")
+# print_stage(stage)
+for i in range(5):
+    print(f"Generation {i + 2}: ")
+    one_generation(stage)
+    print_stage(stage)
